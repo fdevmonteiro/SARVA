@@ -1,0 +1,437 @@
+﻿@model IEnumerable<SARVA.Models.Produto>
+@{
+    ViewBag.Title = "Catálogo de Produtos";
+    int idVenda = ViewBag.IdVenda;
+    int idEmpresa = ViewBag.IdEmpresa;
+
+    var codigosIV = (List<int>)ViewBag.CodigosIV;
+    var listaIdCiclo = (List<int>)ViewBag.IdCicloIV;
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<link href="~/css/catalogostyle.css" rel="stylesheet" />
+
+<body>
+    <div align="center"> <h2>Catálogo de Produtos</h2> </div>
+    <br />
+
+    <!-- FILTROS: -->
+
+    <div class="filtro">
+        @if (idVenda == -1)
+        {
+            <!-- FILTRO FORA DA VENDA -->
+
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Código</li>
+                        <br />
+                        <li><input type="text" name="filtroCodigo" id="filtroCodigo" placeholder="Insira o código" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarCodigo" value="Filtrar Por Código" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Produto</li>
+                        <br />
+                        <li><input type="text" id="filtroProduto" name="filtroProduto" placeholder="Insira o produto" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarProduto" value="Filtrar Por Produto" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Ciclo</li>
+                        <br />
+                        <li><input type="text" id="filtroCiclo" name="filtroCiclo" placeholder="Insira o ciclo" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarCiclo" value="Filtrar por Ciclo" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Empresa</li>
+                        <br />
+                        <li><input type="text" id="razaoSocial" name="razaoSocial" placeholder="Ex.: Natura" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarEmpresa" value="Filtrar por Empresa" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+        }
+
+        else
+        {
+            <!-- FILTRO DENTRO DA VENDA -->
+
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = idVenda, idEmpresa = idEmpresa }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Código</li>
+                        <br />
+                        <li><input type="text" name="filtroCodigo" id="filtroCodigo" placeholder="Insira o código" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarCodigo" value="Filtrar Por Código" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = idVenda, idEmpresa = idEmpresa }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Produto</li>
+                        <br />
+                        <li><input type="text" id="filtroProduto" name="filtroProduto" placeholder="Insira o produto" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarProduto" value="Filtrar Por Produto" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+            using (Html.BeginForm("CatalogoProdutos", "Produtos", new { idVenda = idVenda, idEmpresa = idEmpresa }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+            {
+                <div style="display: inline-flex">
+                    <ul>
+                        <li>Ciclo</li>
+                        <br />
+                        <li><input type="text" id="filtroCiclo" name="filtroCiclo" placeholder="Insira o ciclo" /></li>
+                        <br />
+                        <li><input type="submit" id="btnFiltrarCiclo" value="Filtrar por Ciclo" class="btn btn-light" /></li>
+                    </ul>
+                </div>
+
+            }
+        }
+
+    </div>
+
+    <br />
+
+    @if (idVenda == -1)
+    {
+        <div align="center">@Html.ActionLink("Limpar Filtros", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, htmlAttributes: new { @class = "btn btn-light" })</div>
+    }
+    else
+    {
+        <div align="center">@Html.ActionLink("Limpar Filtros", "CatalogoProdutos", "Produtos", new { idVenda = idVenda, idEmpresa = idEmpresa }, htmlAttributes: new { @class = "btn btn-light" })</div>
+    }
+
+    <br />
+
+    <div align="center">
+
+        <!-- VENDEDOR: -->
+
+        @if (User.IsInRole("Vendedor"))
+        {
+            <div>@Html.ActionLink("Requisitar Produto", "BuscarEmpresa", "Empresas", new { requisitando = 1 }, htmlAttributes: new { @class = "btn btn-light" })</div>
+
+            <br />
+
+            foreach (var item in Model)
+            {
+                if (item.flag == true)
+                {
+                    if (DateTime.Now >= item.Ciclo.dataInicio && DateTime.Now <= item.Ciclo.dataFim)
+                    {
+                        // VIEW DO CATÁLOGO NA VENDA
+
+                        if (idVenda != -1)
+                        {
+                            if (item.id_empresa == idEmpresa)
+                            {
+                                <div class="card" style="width: 15rem; height: 23rem">
+
+                                    <!-- <img src="~/img/Essencial Exclusivo Deo Parfum Masculino.jpg" style="height:320px;" /> -->
+                                    <div class="card-body" style="margin: auto; font-weight: bold; font-size: 20px; text-align: center;">
+                                        <!-- <h5 class="card-title">Essencial Exclusivo Deo Parfum </h5> -->
+
+                                        <div>
+                                            @Html.DisplayFor(modelItem => item.nome, new { htmlAttributes = new { @class = "card-title" } })
+                                            <br />
+                                            #@item.codigo
+
+                                        </div>
+
+                                    </div>
+
+                                    <br />
+
+                                    <ul class="list-group list-group-flush">
+                                        <!-- <li class="list-group-item">Valor: 118,00</li> -->
+
+                                        <li class="list-group-item">
+                                            <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.valor, "Valor: ")</div>
+                                            <div id="valorProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.valor)</div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Ciclo.nome, "Ciclo: ")</div>
+                                            <div id="ciclo" style="text-align: center">@Html.DisplayFor(modelItem => item.Ciclo.nome)</div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Empresa.razao_social, "Empresa: ")</div>
+                                            <div id="empresaProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.Empresa.razao_social)</div>
+                                        </li>
+
+                                        @if (codigosIV.Contains(item.codigo) && listaIdCiclo.Contains(item.id_ciclo))
+
+                                        {
+                                            <p>Produto já adicionado!</p>
+                                        }
+                                        else
+
+                                        {
+                                            @Html.ActionLink("Adicionar", "AdicionarItem_Venda", "Item_Venda", new { codigoIV = item.codigo, idCiclo = item.id_ciclo, idEmpresa = item.id_empresa, idVenda = idVenda, jaTemIV = false }, null)
+                                        }
+
+                                    </ul>
+
+
+                                </div>
+                            }
+                        }
+
+                        // VIEW DO CATÁLOGO FORA DA VENDA
+
+                        else
+                        {
+                            <div class="card" style="width: 15rem; height: 23rem">
+
+                                <!-- <img src="~/img/Essencial Exclusivo Deo Parfum Masculino.jpg" style="height:320px;" /> -->
+                                <div class="card-body" style="margin: auto; font-weight: bold; font-size: 20px; text-align: center;">
+                                    <!-- <h5 class="card-title">Essencial Exclusivo Deo Parfum </h5> -->
+
+                                    <div>
+                                        @Html.DisplayFor(modelItem => item.nome, new { htmlAttributes = new { @class = "card-title" } })
+                                        <br />
+                                        #@item.codigo
+
+                                    </div>
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    <!-- <li class="list-group-item">Valor: 118,00</li> -->
+
+                                    <li class="list-group-item">
+                                        <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.valor, "Valor: ")</div>
+                                        <div id="valorProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.valor)</div>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Ciclo.nome, "Ciclo: ")</div>
+                                        <div id="ciclo" style="text-align: center">@Html.DisplayFor(modelItem => item.Ciclo.nome)</div>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Empresa.razao_social, "Empresa: ")</div>
+                                        <div id="empresaProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.Empresa.razao_social)</div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        }
+                    }
+
+                }
+            }
+
+            <br />
+            <br />
+
+
+            if (idVenda != -1)
+            {
+                <div style="margin: auto">
+                    @Html.ActionLink("Continuar", "FinalizarVenda", "Vendas", new { idVenda = idVenda }, htmlAttributes: new { @class = "btn btn-light" })
+
+                    <div style="margin: auto; padding: 10px;">
+                        @Html.ActionLink("Cancelar", "RemoverVenda", "Vendas", new { id = idVenda }, htmlAttributes: new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+
+            }
+        }
+
+        else
+        {
+
+            <!-- ADMIN: -->
+
+            <div>@Html.ActionLink("Novo Produto", "BuscarEmpresa", "Empresas", new { requisitando = 3 }, htmlAttributes: new { @class = "btn btn-primary" })</div>
+            <br />
+
+            // PRODUTOS REQUISITADOS:
+
+            <h4 align="center">Produtos Requisitados</h4>
+            <br />
+            foreach (var item in Model)
+            {
+
+                if (item.flag == false)
+                {
+                    <div class="card" style="width: 15rem; height: 23rem">
+
+                        <!-- <img src="~/img/Essencial Exclusivo Deo Parfum Masculino.jpg" style="height:320px;" /> -->
+                        <div class="card-body" style="margin: auto; font-weight: bold; font-size: 20px; text-align: center;">
+                            <!-- <h5 class="card-title">Essencial Exclusivo Deo Parfum </h5> -->
+
+                            <div>
+                                @Html.DisplayFor(modelItem => item.nome, new { htmlAttributes = new { @class = "card-title" } })
+                                <br />
+                                #@item.codigo
+
+                            </div>
+
+
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Valor: 118,00</li> -->
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.valor, "Valor: ")</div>
+                                <div id="valorProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.valor)</div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Ciclo.nome, "Ciclo: ")</div>
+                                <div id="ciclo" style="text-align: center">@Html.DisplayFor(modelItem => item.Ciclo.nome)</div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Empresa.razao_social, "Empresa: ")</div>
+                                <div id="empresaProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.Empresa.razao_social)</div>
+                            </li>
+
+                            <li class="list-group-item" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-primary" href="@Url.Action("EditarProduto", "Produtos", new { codigo = item.codigo })"><i class="bi bi-pencil-square"></i></a></div>
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-primary" href="@Url.Action("DetalhesProduto", "Produtos", new { codigo = item.codigo })"><i class="bi bi-three-dots"></i></a></div>
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja remover o Produto?')" href="@Url.Action("DeletarProduto", "Produtos", new { codigo = item.codigo, idCiclo = item.id_ciclo, confirm = true })"><i class="bi bi-trash-fill"></i></a></div>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <br />
+                    <br />
+                    <br />
+                }
+            }
+
+            <br />
+            <br />
+            <br />
+
+            // PRODUTOS HABILITADOS:
+
+            <h4 align="center">Produtos Habilitados</h4>
+            <br />
+            foreach (var item in Model)
+            {
+
+                if (item.flag == true)
+                {
+                    <div class="card" style="width: 15rem; height: 23rem">
+
+                        <!-- <img src="~/img/Essencial Exclusivo Deo Parfum Masculino.jpg" style="height:320px;" /> -->
+                        <div class="card-body" style="margin: auto; font-weight: bold; font-size: 20px; text-align: center;">
+                            <!-- <h5 class="card-title">Essencial Exclusivo Deo Parfum </h5> -->
+
+                            <div>
+                                @Html.DisplayFor(modelItem => item.nome, new { htmlAttributes = new { @class = "card-title" } })
+                                <br />
+                                #@item.codigo
+
+                            </div>
+
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">Valor: 118,00</li> -->
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.valor, "Valor: ")</div>
+                                <div id="valorProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.valor)</div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Ciclo.nome, "Ciclo: ")</div>
+                                <div id="ciclo" style="text-align: center">@Html.DisplayFor(modelItem => item.Ciclo.nome)</div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Empresa.razao_social, "Empresa: ")</div>
+                                <div id="empresaProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.Empresa.razao_social)</div>
+                            </li>
+
+                            <li class="list-group-item" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-primary" href="@Url.Action("EditarProduto","Produtos", new { codigo = item.codigo })"><i class="bi bi-pencil-square"></i></a></div>
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-primary" href="@Url.Action("DetalhesProduto","Produtos", new { codigo = item.codigo })"><i class="bi bi-three-dots"></i></a></div>
+                                <div style="text-align: center; padding: 5px;"><a class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja remover o Produto?')" href="@Url.Action("DeletarProduto","Produtos", new { codigo = item.codigo, idCiclo = item.id_ciclo, confirm = true  })"><i class="bi bi-trash-fill"></i></a></div>
+                            </li>
+                        </ul>
+
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+</body>
+
+<script>
+    $(function () {
+        $("#razaoSocial").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Empresas/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#razaoSocial").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.razaoSocial, value: item.razaoSocial }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>

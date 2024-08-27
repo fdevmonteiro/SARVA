@@ -1,0 +1,103 @@
+﻿@model SARVA.Models.Produto
+
+@{
+    ViewBag.Title = "Editar Produto";
+
+    int codigo = Convert.ToInt32(ViewBag.Codigo);
+}
+
+<link href="~/css/EditarProdutostyle.css" rel="stylesheet" />
+
+<div align="center">
+
+    @using (Html.BeginForm("EditarProduto", "Produtos", new {codigo = codigo}, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <br />
+            <br />
+            <br />
+            <div align="center"><h2 style="color:white;">Editar Produto</h2></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.nome, "Nome do Produto", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.codigo, "Código do Produto", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.codigo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.codigo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            @Html.HiddenFor(model => model.id_empresa)
+
+            @Html.HiddenFor(model => model.id_usuario, htmlAttributes: new { Value = Session["idSS"] })
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.valor, "Valor", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.valor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.valor, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ciclo.nome, "Ciclo", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" id="cicloNome" name="cicloNome" class="form-control" value="@Model.Ciclo.nome" />
+                    @Html.ValidationMessageFor(model => model.Ciclo.nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.pontos, "Pontos", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.pontos, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.pontos, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*@Html.HiddenFor(model => model.flag, htmlAttributes: new { Value = true })*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.flag, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.flag, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.flag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar Alterações" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
+<div align="center">
+    @Html.ActionLink("Voltar", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, htmlAttributes: new { @class = "btn btn-secondary" })
+</div>

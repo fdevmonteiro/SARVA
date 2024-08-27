@@ -1,0 +1,34 @@
+﻿@model SARVA.Models.Produto
+
+@{
+    ViewBag.Title = "Detalhes do Produto";
+}
+
+<h2 align="center">Detalhes do Produto: @Html.DisplayFor(model => model.nome)</h2>
+
+<br />
+<br />
+<br />
+
+<div align="center">
+    <table class="table table-bordered" style="border-color: #FFD6CC;color:black;">
+        <tr>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Empresa</th>
+            <th>Pontos</th>
+            <th>Usuário Associado</th>
+        </tr>
+        <tr>
+            <td>@Html.DisplayFor(model => model.valor)</td>
+            <td>@Html.DisplayFor(model => model.flag)</td>
+            <td>@Html.DisplayFor(model => model.Empresa.razao_social)</td>
+            <td>@Html.DisplayFor(model => model.pontos)</td>
+            <td>@Html.DisplayFor(model => model.Usuario.userName)</td>
+        </tr>
+    </table>
+</div>
+<br />
+<div align="center">
+    @Html.ActionLink("Voltar", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, htmlAttributes: new { @class = "btn btn-info"} )
+</div>

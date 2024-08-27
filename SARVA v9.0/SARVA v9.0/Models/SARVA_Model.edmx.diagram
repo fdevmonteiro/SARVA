@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="89fa3c454205469eb32c0ff40e84cf97" Name="Diagram1">
+        <EntityTypeShape EntityType="SARVAModel.Ciclo" Width="1.5" PointX="7.5" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Cliente" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Empresa" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Item_Pedido" Width="1.5" PointX="15" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Item_Venda" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Pedido" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Produto" Width="1.5" PointX="9.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Score" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Usuario" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.UsuarioRole" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SARVAModel.Venda" Width="1.5" PointX="10.5" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="SARVAModel.FK_Ciclo_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Produto_Ciclo1" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Cliente__id_usua__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Venda__id_client__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Cliente_Score" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Produto__id_empr__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Venda__id_empres__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Empresa_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Pedido_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Item_Pedido_Item_Venda" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Item_Pedido_Pedido2" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Item_Vend__id_ve__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Item_Venda_Produto1" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK_Pedido_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Produto__id_usua__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Usuario__roleId__267ABA7A" ManuallyRouted="false" />
+        <AssociationConnector Association="SARVAModel.FK__Venda__id_usuari__32E0915F" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

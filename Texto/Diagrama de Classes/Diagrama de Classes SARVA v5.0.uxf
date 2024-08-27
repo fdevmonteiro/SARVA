@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>192</y>
+      <w>168</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Usuario
+--
+- role: UsuarioRole
+- email: varchar(50)
+- senha: varchar(8)
+- username: varchar(50)
+--
++ LerDados_Usuário(): void
++ Adicionar_Usuario(): void
++ Editar_Usuario(): void
++ Remover_Usuario(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>448</y>
+      <w>168</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Empresa
+--
+- usuario: Usuario
+- razao_social: varchar(50)
+- flag: bit
+--
++ LerDados_Empresa(): void
++ Adicionar_Empresa(): void
++ Editar_Empresa(): void
++ Remover_Empresa(): void
++ Buscar_Empresa(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>248</x>
+      <y>280</y>
+      <w>168</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Cliente
+--
+- usuario: Usuario
+/- scoreid: integer/
+- nome: varchar(50)
+- email: varchar(50)
+- aniversario: date
+--
++ LerDados_Cliente(): void
++ Adicionar_Cliente(): void
++ Editar_Cliente(): void
++ Remover_Cliente(): void
++ Buscar_Cliente(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>144</y>
+      <w>176</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>- possui   - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>328</y>
+      <w>120</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>- gerencia                  
+
+lt=-
+m1=0..n
+m2=0..1
+&lt; Gerenciar
+
+ - é gerenciado</panel_attributes>
+    <additional_attributes>10.0;110.0;40.0;110.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>328</y>
+      <w>168</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>- gerencia
+
+lt=-
+m1=0..1
+m2=0..n
+Gerenciar &gt;
+
+- é gerenciado</panel_attributes>
+    <additional_attributes>100.0;10.0;100.0;320.0;10.0;320.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>288</y>
+      <w>104</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>- gerencia
+
+lt=-
+m1=0..n
+m2=0..1
+Gerenciar &gt;
+
+- é gerenciado</panel_attributes>
+    <additional_attributes>20.0;200.0;20.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>872</x>
+      <y>456</y>
+      <w>168</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>Pedido
+--
+- usuario: Usuario
+- empresa: Empresa
+- valor_total: decimal(18,2)
+--
++ LerDados_Pedido(): void
++ Adicionar_Pedido(): void
++ Editar_Pedido(): void
++ Remover_Pedido(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>680</y>
+      <w>192</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Item_Venda
+--
+- codigo_produto: integer
+- venda: Venda
+- ciclo_produto: Produto.ciclo
+- valor: decimal(18,2)
+- quantidade: interger
+- data_validade: date
+--
++ AdicionarItem_Venda(): void
++ RemoverItem_Venda(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1144</x>
+      <y>568</y>
+      <w>72</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>- possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;
+
+- possui</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>696</y>
+      <w>736</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>- possui                        - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;900.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>328</y>
+      <w>408</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>- possui                        - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;100.0;470.0;100.0;470.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1216</x>
+      <y>208</y>
+      <w>120</w>
+      <h>488</h>
+    </coordinates>
+    <panel_attributes>- possui 
+
+lt=-
+m1=0..1
+m2=0..1
+Possui &gt;
+
+- possui</panel_attributes>
+    <additional_attributes>70.0;590.0;70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>304</x>
+      <y>440</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>- possui  
+               
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;
+
+ - possui</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>328</y>
+      <w>408</w>
+      <h>368</h>
+    </coordinates>
+    <panel_attributes>- gerencia        - é gerenciado
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;430.0;470.0;430.0;470.0;330.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>152</y>
+      <w>168</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>Produto
+--
+- codigo: integer
+- empresa: Empresa
+- usuario: Usuario
+- ciclo: Ciclo
+- nome: varchar(50)
+- valor: decimal(18,2)
+- pontos: int 
+- flag: bit
+--
++ LerDados_Produto(): void
++ Adicionar_Produto(): void
++ Editar_Produto(): void
++ Remover_Produto(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>584</y>
+      <w>352</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>- possui                   - possui
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;
+</panel_attributes>
+    <additional_attributes>400.0;10.0;400.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>528</y>
+      <w>128</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>- possui - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>248</x>
+      <y>544</y>
+      <w>168</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>Venda
+--
+- usuario: Usuario
+- cliente: Cliente
+- empresa: Empresa
+- valor: decimal(18,2)
+- data_pedido: date
+- data_vencimento: date
+- data_pagamento: date
+- desconto: decimal(18,2)
+- valorFinal: decimal(18,2)
+--
++ LerDados_Venda(): void
++ Adicionar_Venda(): void
++ Editar_Venda(): void
++ Remover_Venda(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>624</x>
+      <y>144</y>
+      <w>168</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>UsuarioRole
+--
+-roleName:varchar(50)
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>168</y>
+      <w>104</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Login
+--
++email: string
++senha: string
+--
++Register()
++Login()
++Logout()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>208</y>
+      <w>104</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..1
+m2=0..1
+possui &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>176</y>
+      <w>472</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>- gerencia     - é gerenciado
+
+lt=-
+m1=0..1
+m2=0..1
+Gerenciar &gt;
+</panel_attributes>
+    <additional_attributes>10.0;110.0;250.0;110.0;250.0;30.0;570.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1064</x>
+      <y>456</y>
+      <w>192</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Item_Pedido
+--
+- codigo_IV: integer
+- id_ciclo_IV: interger
+- id_venda_IV: interger
+- pedido: Pedido
+- valor: decimal(18,2)
+--
++ AdicionarItem_Pedido(): void
++ RemoverItem_Pedido(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>888</x>
+      <y>248</y>
+      <w>152</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Ciclo
+--
+- empresa: Empresa
+- nome: varchar(50)
+- dataInicio: date
+- datafim: date
+--
++ LerDados_Ciclo(): void
++ Adicionar_Ciclo(): void
++ Editar_Ciclo(): void
++ Remover_Ciclo(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>960</x>
+      <y>568</y>
+      <w>184</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>- possui       - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>190.0;10.0;190.0;70.0;10.0;70.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>336</y>
+      <w>216</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>- possui        - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>896</x>
+      <y>208</y>
+      <w>176</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>- possui        - possui
+
+lt=-
+m1=0..1
+m2=0..n
+Possuir &gt;</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+</diagram>

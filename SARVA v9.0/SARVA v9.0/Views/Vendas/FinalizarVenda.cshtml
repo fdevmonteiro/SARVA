@@ -1,0 +1,189 @@
+﻿@model IEnumerable<SARVA.Models.Item_Venda>
+
+@{
+    ViewBag.Title = "Finalizar Venda";
+    SARVA.Models.Venda v = (SARVA.Models.Venda)ViewBag.Venda;
+    decimal valorTotal = 0;
+    int scoreId = Convert.ToInt32(ViewBag.ScoreCliente);
+}
+
+<script>
+    function SimularDesconto(valorT)
+    {
+         document.getElementById("status").innerHTML = " "
+
+         var desconto = document.getElementById("desconto").value;
+           var valorfinal = valorT - desconto
+           var valorfinal = valorT - desconto
+
+         if (desconto <= (0.3 * valorT)) {
+             var texto = "Desconto está DENTRO da margem de lucro!"
+             document.getElementById("status").innerHTML = texto
+             document.getElementById("valorfinal").innerHTML = valorfinal
+
+         }
+         else if (desconto > (0.3 * valorT)) {
+             var texto2 = "Desconto está FORA da margem de lucro!"
+             document.getElementById("status").innerHTML = texto2
+             document.getElementById("valorfinal").innerHTML = valorfinal
+         }
+    }
+</script>
+
+<link href="~/css/FinalizarVendastyle.css" rel="stylesheet" />
+
+
+<div align="center">
+
+    <h2>Finalizar Venda</h2>
+
+    <br />
+
+    <div style="display: inline-flex">
+        <h3>Cliente @v.Cliente.nome</h3>
+
+        <div>
+            @if (scoreId == 3)
+            {
+                <i class="bi bi-flag-fill h3" style="color:grey;"></i>
+            }
+            else if (scoreId == 2)
+            {
+                <i class="bi bi-flag-fill h3" style="color:red"></i>
+            }
+            else if (scoreId == 1)
+            {
+                <i class="bi bi-flag-fill h3" style="color:green"></i>
+            }
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+
+    @if (scoreId == 2) // SE O CLIENTE FOR MAU PAGADOR
+    {
+        <p style="color: red"><b>AVISO:</b> O Cliente selecionado está <b>inadimplente!</b> Sugerimos que realize a <b>venda à vista!</b></p>
+        <br />
+        <div style="margin: auto; padding: 10px;">
+            @Html.ActionLink("Cancelar Venda", "RemoverVenda", "Vendas", new { id = v.id }, htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+        <br />
+    }
+
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+        <tr>
+            <th>
+                Produtos
+            </th>
+            <th>
+                Valores
+            </th>
+            <th>
+                Quantidades
+            </th>
+            <th>
+                Datas de validade
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            valorTotal += Convert.ToDecimal(item.valor) * Convert.ToDecimal(item.quantidade);
+            <tr style="text-align: center; color:black;">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produto.nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valor)
+                </td>
+                <td>
+                    <div>
+                        @Html.ActionLink("-", "RemoverItem_Venda", "Item_Venda", new { codigoIV = item.codigo_produto, idCiclo = item.id_ciclo_produto, idVenda = v.id }, htmlAttributes: new { @class = "btn btn-danger", @style = "font-size: 20px" })
+                        @Html.DisplayFor(modelItem => item.quantidade)
+                        @Html.ActionLink("+", "AdicionarItem_Venda", "Item_Venda", new { codigoIV = item.codigo_produto, idCiclo = item.id_ciclo_produto, idEmpresa = item.Produto.id_empresa, idVenda = v.id, jaTemIV = true }, htmlAttributes: new { @class = "btn btn-primary", @style = "font-size: 20px" })
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_validade)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+        <tr>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Data de Vencimento</th>
+            <th>Valor</th>
+            <th>Desconto</th>
+            <th>Valor Total</th>
+        </tr>
+        <tr style="text-align: center; color:black;">
+        <td>@v.Cliente.nome</td>
+        <td>@v.data_venda</td>
+        <td>@v.data_vencimento</td>
+        <td>@valorTotal</td>
+        <td>
+            @using (Html.BeginForm("FinalizarVenda", "Vendas", new {idVenda = v.id, dif = 0}, FormMethod.Post))
+            {
+                <label for="descontoVenda">R$</label>
+                <input type="number" id="descontoVenda" name="descontoVenda" />
+                <input type="submit" id="btnAplicarDesconto" value="Aplicar Desconto" onclick="" />
+            }
+        </td>
+        <td>@(valorTotal - v.desconto)</td>
+        </tr>
+
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Finalizar Venda", "FinalizarVendaPost", "Vendas", new { idVenda = v.id, valorTotal = valorTotal }, htmlAttributes: new { @class = "btn btn-primary" })
+
+            <br />
+            <br />
+
+            @Html.ActionLink("Cancelar Venda", "RemoverVenda", "Vendas", new { id = v.id }, htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+</div>
+
+<br />
+<br />
+
+<table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+
+    <tr>
+        <th>
+            Desconto
+        </th>
+        <th>
+            Valor final
+        </th>
+        <th>
+            Classificação
+        </th>
+    </tr>
+
+    <tr style="text-align: center; color:black;">
+        <td>
+            <input type="text" id="desconto" /> <input onclick="SimularDesconto(@valorTotal)" type="button" value="Simular desconto" id="btnDesconto" />
+        </td>
+        <td>
+            <p id="valorfinal"></p>
+        </td>
+        <td>
+            <p id="status"></p>
+        </td>
+    </tr>
+
+</table>
+
+
+

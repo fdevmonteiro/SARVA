@@ -1,0 +1,159 @@
+﻿@model IEnumerable<SARVA.Models.Item_Pedido>
+
+@{
+    ViewBag.Title = "Finalizar Pedido";
+
+    SARVA.Models.Pedido p = (SARVA.Models.Pedido)ViewBag.Pedido;
+    decimal valorTotal = 0;
+    var listCodigos = new List<int>(); // lista de codigos dos itens pedido
+
+    var listProdutos = new List<SARVA.Models.ProdutoPedido>();
+
+    foreach (var item in p.Item_Pedido)
+    {
+        // 1º item: kaiak | 4556 | id Ciclo = 2 | nº venda 1 | IV quantidade = 5
+        // 2º item: lua   | 1324 | id Ciclo = 5 
+        // 3º item: kaiak | 4556 | id Ciclo = 2 | nº venda 2 | IV quantidade = 3
+
+
+
+        SARVA.Models.ProdutoPedido PP = new SARVA.Models.ProdutoPedido();
+        PP.nome = item.Item_Venda.Produto.nome;
+        PP.codigo = item.codigo_IV;
+        PP.quantidade = Convert.ToInt32(item.Item_Venda.quantidade);
+
+
+        if (!listCodigos.Contains(PP.codigo))
+        {
+            listCodigos.Add(PP.codigo);
+
+            listProdutos.Add(PP);
+        }
+        else
+        {
+            SARVA.Models.ProdutoPedido PP2 = listProdutos.Where(x => x.codigo == item.codigo_IV).FirstOrDefault();
+            listProdutos.Remove(PP2);
+            PP2.quantidade += Convert.ToInt32(item.Item_Venda.quantidade);
+            listProdutos.Add(PP2);
+        }
+
+    }
+}
+
+
+<link href="~/css/FinalizarVendastyle.css" rel="stylesheet" />
+
+
+<div align="center">
+
+    <h2>Finalizar Pedido</h2>
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+        <tr style="text-align: center; color:black;">
+            <th>
+                Nº Venda
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Produtos
+            </th>
+            <th>
+                Ciclos
+            </th>
+            <th>
+                Valores
+            </th>
+            <th>
+                Quantidades
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+
+            valorTotal += Convert.ToDecimal(item.valor) * Convert.ToDecimal(item.Item_Venda.quantidade);
+            <tr style="text-align: center; color:black;">
+                <td>
+                    @Html.DisplayFor(modelItem => item.id_venda_IV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item_Venda.Venda.Cliente.nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item_Venda.Produto.nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item_Venda.Produto.Ciclo.nome)
+                </td>
+                <td>
+                    @(item.valor * item.Item_Venda.quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item_Venda.quantidade)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <br />
+
+    <h4>Resumo do Pedido</h4>
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+
+        <tr style="text-align: center; color:black;">
+            <th>Produto</th>
+            <th>Quantidade</th>
+        </tr>
+
+        @foreach (var produtoP in listProdutos)
+        {
+            <tr style="text-align: center; color:black;">
+                <td>
+                    @produtoP.nome
+                </td>
+
+                <td>
+                    @produtoP.quantidade
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <br />
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+        <tr style="text-align: center; color:black;">
+            <th>Data do Pedido</th>
+            <th>Data de Vencimento</th>
+            <th>Valor Total</th>
+            <th>Valor A Ser Pago</th>
+        </tr>
+        <tr style="text-align: center; color:black;">
+            <td>@p.data_pedido</td>
+            <td>@p.data_vencimento</td>
+            <td>@valorTotal</td>
+            <td>@(0.7M * valorTotal)</td>
+        </tr>
+
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Finalizar Pedido", "FinalizarPedidoPost", "Pedidos", new { idPedido = p.id, valorTotal = valorTotal }, htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+
+        <br />
+
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Cancelar Pedido", "RemoverPedido", "Pedidos", new { id = p.id, confirm = true }, htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+</div>
+
+

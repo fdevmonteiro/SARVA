@@ -1,0 +1,116 @@
+﻿@model SARVA.Models.Venda
+
+@{
+    ViewBag.Title = "Editar Venda";
+
+    var data_pagamento = Model.data_pagamento;
+
+    //decimal valorVenda = 0;
+    //int idVenda = ViewBag.IdVenda;
+}
+<link href="~/css/EditarVendastylecss.css" rel="stylesheet" />
+
+
+<div align="center">
+    <br />
+    <br />
+    <br />
+    <h2 style="color:white;">Editar Venda</h2>
+    @using (Html.BeginForm("EditarVenda", "Vendas", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.Cliente.nome, "Cliente", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })
+                <div class="col-md-10" style="font-size: 18px">
+                    @Html.DisplayFor(item => item.Cliente.nome, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 18px; text-align: center" } })
+                    @Html.ValidationMessageFor(item => item.Cliente.nome, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(item => item.Cliente.nome)
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.valor, "Valor Total", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(item => item.valor, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 18px; text-align: center" } })
+                    @Html.ValidationMessageFor(item => item.valor, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(item => item.valor)
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.data_venda, "Data", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })
+                <div class="col-md-10" style="font-size: 18px">
+                    @Html.DisplayFor(item => item.data_venda, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 18px; text-align: center" } })
+                    @Html.ValidationMessageFor(item => item.data_venda, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(item => item.data_venda)
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.data_vencimento, "Data de Vencimento", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(item => item.data_vencimento, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 18px; text-align: center" } })
+                    @Html.ValidationMessageFor(item => item.data_vencimento, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(item => item.data_vencimento)
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label for="dataPagamento" class="control-label col-md-2" style="font-size: 22px; font-weight: bold;">Data de Pagamento</label>
+                @*@Html.LabelFor(item => item.data_pagamento, "Data de Pagamento", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })*@
+                <div class="col-md-10">
+                    <input value="@data_pagamento" type="date" id="dataPagamento" name="dataPagamento" class="form-control" />
+                    @*@Html.EditorFor(item => item.data_pagamento, new { htmlAttributes = new { @class = "form-control" }, @style = "font-size: 18px; text-align: center" })*@
+                    @Html.ValidationMessageFor(item => item.data_pagamento, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.desconto, "Desconto", htmlAttributes: new { @class = "control-label col-md-2", @style = "font-size: 22px; font-weight: bold;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(item => item.desconto, new { htmlAttributes = new { @class = "form-control" }, @style = "font-size: 18px; text-align: center" })
+                    @Html.ValidationMessageFor(item => item.desconto, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <br />
+
+            @Html.HiddenFor(item => item.id)
+
+            @Html.HiddenFor(item => item.id_usuario)
+
+            @Html.HiddenFor(item => item.id_empresa)
+
+            @Html.HiddenFor(item => item.valorFinal)
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar Alterações" class="btn btn-light" />
+                </div>
+            </div>
+        </div>
+    }
+</div>

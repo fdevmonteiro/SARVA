@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SARVA.Models.Empresa>
+
+@{
+    ViewBag.Title = "Gerir Empresas";
+}
+<link href="~/css/LerEmpresasstyle.css" rel="stylesheet" />
+<h2 align="center">Lista de Empresas</h2>
+
+<div align="center">
+    @Html.ActionLink("Nova Empresa", "AdicionarEmpresa", "Empresas")
+</div>
+<br />
+<table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+    <tr>
+        <th>
+            Razão Social
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Usuário
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+         <tr style="text-align: center; color:black;">
+             <td>
+                 @Html.DisplayFor(modelItem => item.razao_social)
+             </td>
+             @if (item.flag == true)
+             {
+                <td>
+                    Habilitado
+                </td>
+             }
+             else
+             {
+                <td>
+                    Desabilitado
+                </td>
+             }
+             <td>
+                 @Html.DisplayFor(modelItem => item.Usuario.userName)
+             </td>
+             <td>
+                 <a class="btn btn-info" href="@Url.Action("EditarEmpresa","Empresas", new { id = item.id })"><i class="bi bi-pencil-square"></i></a>
+                 @*@Html.ActionLink("Editar", "EditarEmpresa", "Empresas", new { id = item.id }, null)*@ |
+                 <a class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover a empresa ' + '@item.razao_social' + '?')" href="@Url.Action("RemoverEmpresa","Empresas", new { id = item.id, confirm = true })"><i class="bi bi-trash-fill"></i></a>
+                 @*@Html.ActionLink("Deletar", "RemoverEmpresa", "Empresas", new { id = item.id }, null)*@
+             </td>
+         </tr>
+    }
+
+</table>

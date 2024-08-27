@@ -1,0 +1,80 @@
+﻿@model SARVA.Models.Cliente
+
+@{
+    ViewBag.Title = "Editar Cliente";
+}
+<link href="~/css/EditarClientestyle.css" rel="stylesheet" />
+
+
+<div align="center" >
+    <br />
+    <br />
+    <br />
+    <br />
+    <h2 style="color:white">Editar Cliente</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(item => item.id)
+            @Html.HiddenFor(item => item.id_usuario)
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.nome, "Nome do Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(item => item.nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(item => item.nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.email, "Email para Contato", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(item => item.email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(item => item.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.aniversario, "Data de Aniversário", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(item => item.aniversario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(item => item.aniversario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(item => item.Score.descricao, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(item => item.Score.descricao, new { htmlAttributes = new { @class = "form-control", @id = "scoreCliente" } })
+                    @Html.ValidationMessageFor(item => item.Score.descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar Alterações" class="btn btn-light" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
+<div align="center">
+    @Html.ActionLink("Voltar", "LerDadosCliente","Clientes", htmlAttributes: new { @class = "btn btn-secondary" })
+</div>
+

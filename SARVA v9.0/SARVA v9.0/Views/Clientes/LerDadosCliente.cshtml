@@ -1,0 +1,154 @@
+﻿@model IEnumerable<SARVA.Models.Cliente>
+
+@{
+    ViewBag.Title = "Meus Clientes";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="~/css/LerDadosClientesstylecss.css" type="text/css">
+
+<body>
+
+    <div class="text">
+        <h2>Meus Clientes</h2>
+    </div>
+
+    <div class="filtro">
+        @using (Html.BeginForm("LerDadosCliente", "Clientes", FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+        {
+            <div style="display: inline-flex">
+
+                <ul style="list-style: none">
+                    <li style="list-style: none">Cliente:</li>
+                    <br />
+                    <li style="list-style: none"><input type="text" name="nomeCliente" id="nomeCliente" /></li>
+                    <br />
+                    <li style="list-style: none"><input type="submit" id="btnFiltrarNome" value="Filtrar Por Nome" /></li>
+                </ul>
+
+            </div>
+        }
+
+        <br />
+
+        @using (Html.BeginForm("LerDadosCliente", "Clientes", FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+        {
+            <div style="display: inline-flex">
+
+                <ul style="list-style: none">
+                    <li style="list-style: none">Data de Aniversário:</li>
+                    <br />
+                    <li style="list-style: none"><input type="date" id="filtroNiver" name="filtroNiver" /></li>
+                    <br />
+                    <li style="list-style: none"><input type="submit" id="btnFiltrarNive" value="Filtrar Por Aniversário" /></li>
+                </ul>
+
+            </div>
+        }
+
+    </div>
+
+    <br />
+
+    <div align="center">
+        @Html.ActionLink("Limpar Filtros", "LerDadosCliente", "Clientes", htmlAttributes: new { @class = "btn btn-light" })
+    </div>
+
+    <br />
+    <br />
+
+    <table class="table table-bordered" style="font-size:20px;border-color: #FFD6CC;color:black;background:white;">
+        <tr class="titleRow" style="text-align: center">
+            <th>
+                Nome
+            </th>
+
+            <th>
+                Email
+            </th>
+
+            <th>
+                Data de Aniversário
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>
+                Opções
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr style="text-align: center;color:black;">
+                <td>
+                    @Html.DisplayFor(modelItem => item.nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aniversario)
+                </td>
+                <td>
+                    @if (item.scoreId == 3)
+
+                    {
+                        <i class="bi bi-flag-fill h3" style="color:grey;"></i>
+                    }
+                    else if (item.scoreId == 2)
+                    {
+                        <i class="bi bi-flag-fill h3" style="color:red"></i>
+                    }
+                    else if (item.scoreId == 1)
+                    {
+                        <i class="bi bi-flag-fill h3" style="color:green"></i>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-info" href="@Url.Action("EditarCliente","Clientes", new { id = item.id })"><i class="bi bi-pencil-square"></i></a>  |
+                    <a class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir o cliente ' + '@item.nome' + '?')" href="@Url.Action("RemoverCliente","Clientes", new { id = item.id, confirm = true })"><i class="bi bi-trash-fill"></i></a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <br />
+
+    @Html.ActionLink("Novo Cliente", "AdicionarCliente", "Clientes", htmlAttributes: new { @class = "btn btn-light" })
+
+</body>
+
+<script>
+    $(function () {
+        $("#nomeCliente").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Clientes/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#nomeCliente").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.nomeCliente, value: item.nomeCliente }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>

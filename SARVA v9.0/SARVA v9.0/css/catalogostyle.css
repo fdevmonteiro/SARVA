@@ -1,0 +1,33 @@
+﻿body {
+    background-image: url('../img/catalogo background.png');
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: #fff;
+    width: 300px;
+    height: 260px;
+    border-radius: 12px;
+    box-shadow: 4px 4px 12px #aaaa;
+    display: inline-flex;
+    flex-basis: 25%;
+}
+
+.filtro{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formFiltro{
+    display: inline-flex;
+}
+
+ul, li{
+    list-style: none;
+}

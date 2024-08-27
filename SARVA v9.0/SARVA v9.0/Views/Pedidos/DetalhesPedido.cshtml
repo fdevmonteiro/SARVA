@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SARVA.Models.Item_Pedido>
+
+@{
+    ViewBag.Title = "Detalhes do Pedido";
+
+    int idPedido = Convert.ToInt32(ViewBag.IdPedido);
+
+    SARVA.Models.Pedido p = (SARVA.Models.Pedido)ViewBag.Pedido;
+
+    var listCodigos = new List<int>(); // lista de codigos dos itens pedido
+
+    var listProdutos = new List<SARVA.Models.ProdutoPedido>();
+
+    foreach (var item in p.Item_Pedido)
+    {
+        // 1º item: kaiak | 4556 | id Ciclo = 2 | nº venda 1 | IV quantidade = 5
+        // 2º item: lua   | 1324 | id Ciclo = 5
+        // 3º item: kaiak | 4556 | id Ciclo = 2 | nº venda 2 | IV quantidade = 3
+
+
+
+        SARVA.Models.ProdutoPedido PP = new SARVA.Models.ProdutoPedido();
+        PP.nome = item.Item_Venda.Produto.nome;
+        PP.codigo = item.codigo_IV;
+        PP.quantidade = Convert.ToInt32(item.Item_Venda.quantidade);
+
+
+        if (!listCodigos.Contains(PP.codigo))
+        {
+            listCodigos.Add(PP.codigo);
+
+            listProdutos.Add(PP);
+        }
+        else
+        {
+            SARVA.Models.ProdutoPedido PP2 = listProdutos.Where(x => x.codigo == item.codigo_IV).FirstOrDefault();
+            listProdutos.Remove(PP2);
+            PP2.quantidade += Convert.ToInt32(item.Item_Venda.quantidade);
+            listProdutos.Add(PP2);
+        }
+
+    }
+}
+
+<link href="~/css/DetalhesVendastyle.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<h2 align="center">Lista de Produtos do Pedido Nº @idPedido</h2>
+
+<br />
+
+<table class="table table-bordered " style="font-size:20px;border-color: #FFD6CC;color:black;background:white;">
+    <tr>
+        <th>
+            Nº Venda
+        </th>
+        <th>
+            Produto
+        </th>
+        <th>
+            Código do Produto
+        </th>
+        <th>
+            Valor
+        </th>
+        <th>
+            Quantidade
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_venda_IV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Venda.Produto.nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Venda.codigo_produto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Venda.quantidade)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+
+<h4 align="center">Resumo do Pedido</h4>
+
+<table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+
+    <tr style="text-align: center; color:black;">
+        <th>Produto</th>
+        <th>Quantidade</th>
+    </tr>
+
+    @foreach (var produtoP in listProdutos)
+    {
+        <tr style="text-align: center; color:black;">
+            <td>
+                @produtoP.nome
+            </td>
+
+            <td>
+                @produtoP.quantidade
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+
+<div align="center">@Html.ActionLink("Voltar", "LerDadosPedido", "Pedidos", new { }, htmlAttributes: new { @class = "btn btn-light" })</div>

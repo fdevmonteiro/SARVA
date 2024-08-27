@@ -1,0 +1,62 @@
+﻿body {
+    background-image: url('../img/catalogo background.png');
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+}
+
+.content {
+    display: inline-flex;
+    color: white;
+    padding-top: 5em;
+    padding-left: 2em;
+    padding-right: 22em;
+}
+
+
+.filtro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formFiltro {
+    display: inline-flex;
+}
+
+.text {
+    text-align: center;
+}
+
+    .text h2 {
+        font-size: 5em;
+        padding-left: 1em;
+    }
+
+@media screen and (max-width: 480px) {
+    body {
+        height: 100%;
+        background-repeat: repeat-y;
+        background-attachment: fixed;
+        background-size: 200%;
+    }
+
+    .text h2 {
+        font-size: 2em;
+        padding-left: 1em;
+    }
+
+    table {
+        width: 200px;
+        table-layout: fixed;
+    }
+    td, th {
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+    
+}

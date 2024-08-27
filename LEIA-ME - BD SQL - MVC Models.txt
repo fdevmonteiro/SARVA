@@ -1,0 +1,22 @@
+-- INSTRUÇÕES PARA CONECTAR O BANCO DE DADOS AO PROJETO MVC:
+
+-- 1º Execute o script 'SARVA v9.0' no MS SQL
+
+-- 2º Na pasta Models da solução do Projeto MVC 'SARVA v9.0', 
+-- exclua o Model de Entity Framework
+
+-- 3º Vá no arquivo WebConfig do projeto MVC 'SARVA v9.0' e 
+-- procure pela tag <connectionStrings>
+
+-- 4º Apague, dentro da tag <connectionStrings>, a tag <add>,
+-- que contém a connectionString do Model antigo
+
+-- 5º Adicione um novo item na pasta Models 
+-- do tipo "Dados" -> "ADO.NET Entity Data Model"
+
+-- 6º Selecione o servidor do SQL em que foi adicionado o banco
+-- e selecione o banco SARVA
+
+-- 7º Defina o nome da nova connectionString como "connSARVA"
+
+-- 8º Adicione o novo Model ao projeto, conectado ao banco de dados

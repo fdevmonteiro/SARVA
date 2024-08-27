@@ -1,0 +1,95 @@
+﻿@model SARVA.Models.connSARVA
+@{
+    ViewBag.Title = "Relatórios";
+    bool gerou = (bool)ViewBag.Gerou;
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<h2 align="center">Relatório Mensal</h2>
+
+<br />
+
+<h3 align="center">Gerar Relatório por Empresa</h3>
+<br />
+<div align="center">
+    @using (Html.BeginForm("Relatorio", "Home", new { gerou = true }, FormMethod.Post))
+
+    {
+        <input type="text" id="razaoSocial" name="razaoSocial" placeholder="Ex.: Natura" />
+        <br />
+        <br />
+        <input class="btn btn-primary" type="submit" value="Gerar Relatório" id="btnGerarRel" />
+    }
+</div>
+
+<br />
+<br />
+
+@if (gerou)
+
+{
+    var totalVendas = (IEnumerable<SARVA.Models.Venda>)ViewBag.VendasRealizadas;
+    var vendasPagas = (List<SARVA.Models.Venda>)ViewBag.VendasPagas;
+    var valorObtido = Convert.ToDecimal(ViewBag.ValorObtido);
+    var valorASerPago = Convert.ToDecimal(ViewBag.ValorASerPago);
+    var lucro = Convert.ToDecimal(ViewBag.Lucro);
+    var razaoSocial = Convert.ToString(ViewBag.Empresa);
+
+    <h4 align="center">Relatório Empresa @razaoSocial</h4>
+
+    <br />
+
+    <table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+        <tr>
+            <th>Vendas realizadas</th>
+            <th>Vendas pagas</th>
+            <th>Valor obtido</th>
+            <th>Valor a ser pago</th>
+            <th>Lucro obtido</th>
+        </tr>
+        <tr>
+            <td>@totalVendas.Count()</td>
+            <td>@vendasPagas.Count</td>
+            <td>@valorObtido</td>
+            <td>@valorASerPago</td>
+            <td>@lucro</td>
+        </tr>
+    </table>
+}
+
+<br />
+
+<hr />
+
+<br />
+
+<script>
+    $(function () {
+        $("#razaoSocial").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Empresas/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#razaoSocial").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.razaoSocial, value: item.razaoSocial }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>

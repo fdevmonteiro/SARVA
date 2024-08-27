@@ -1,0 +1,90 @@
+﻿body {
+    background-image: url('../img/catalogo background.png');
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.content {
+    display: inline-flex;
+    color: white;
+    padding-top: 5em;
+    padding-left: 2em;
+    padding-right: 22em;
+}
+
+.text {
+    margin: auto;
+    text-align: center;
+    color: white; 
+    padding-top: 5em; 
+    text-shadow: 1px 1px 2px black;
+}
+
+.filtro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formFiltro {
+    display: inline-flex;
+}
+
+.text h2 {
+    font-size: 5em;
+    padding-left: 1em;
+}
+
+.table table-bordered{
+    margin: auto;
+}
+
+.areatabela {
+    text-align: center;
+    width: 1000px;
+    height: 500px;
+    background: #F54971;
+    border-radius: 80px;
+}
+
+.areatabela h1 {
+    font-size: 50px;
+}
+    
+
+.caixatbl {
+    padding-left: 10em;
+}
+
+
+@media screen and (max-width: 480px) {
+    body {
+        height: 100%;
+        background-repeat: repeat-y;
+        background-attachment: fixed;
+        background-size: 200%;
+    }
+
+    .filtroForm {
+        margin: auto;
+        text-align: center;
+    }
+
+    .filtro1 {
+        margin: auto;
+    }
+
+    .text h2 {
+        font-size: 2em;
+        padding-left: 1em;
+    }
+
+    .titleRow{
+        font-size: 16px;
+    }
+}

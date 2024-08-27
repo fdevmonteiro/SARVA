@@ -1,0 +1,170 @@
+﻿@model IEnumerable<SARVA.Models.Venda>
+
+@{
+    ViewBag.Title = "Minhas Vendas";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<div align="center">
+    <div class="content">
+        <div class="text" style="color: white; padding-top: 5em; text-shadow: 1px 1px 2px black" ;>
+            <h2 align="center">Minhas Vendas</h2>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="~/css/LerDadosVendasstyle.css" type="text/css" />
+<br />
+<br />
+
+<div class="filtro">
+    @using (Html.BeginForm("LerDadosVenda", "Vendas", FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+    {
+        <div style="display: inline-flex">
+
+            <ul style="list-style: none">
+                <li style="list-style: none">Início:</li>
+                <br />
+                <li style="list-style: none"><input type="date" name="dataInicio" id="dataInicio" /></li>
+                <br />
+                <li style="list-style: none">Fim:</li>
+                <br />
+                <li style="list-style: none"><input type="date" name="dataFim" id="dataFim" /></li>
+                <br />
+                <li style="list-style: none"><input type="submit" id="btnFiltrarData" value="Filtrar Por Data" /></li>
+            </ul>
+
+        </div>
+    }
+
+    <br />
+
+    @using (Html.BeginForm("LerDadosVenda", "Vendas", FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+    {
+        <div style="display: inline-flex">
+
+            <ul style="list-style: none">
+                <li style="list-style: none">Filtrar por Cliente:</li>
+                <br />
+                <li style="list-style: none"><input type="text" id="nomeCliente" name="filtroCliente" placeholder="Insira o nome do Cliente" /></li>
+                <br />
+                <li style="list-style: none"><input type="submit" id="btnFiltrarCliente" value="Filtrar Por Cliente" /></li>
+            </ul>
+
+        </div>
+    }
+
+</div>
+
+<br />
+
+<div align="center">@Html.ActionLink("Limpar Filtros", "LerDadosVenda", "Vendas", htmlAttributes: new { @class = "btn btn-light" })</div>
+
+<br />
+<br />
+
+<div align="center">
+    @Html.ActionLink("Nova Venda", "BuscarCliente", "Clientes", null, htmlAttributes: new { @class = "btn btn-light" })
+</div>
+
+<br />
+
+<table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+    <tr style="text-align: center">
+        <th>
+            Nº
+        </th>
+        <th>
+            Cliente
+        </th>
+        <th>
+            Empresa
+        </th>
+        <th>
+            Valor
+        </th>
+        <th>
+            Data Venda
+        </th>
+        <th>
+            Vencimento
+        </th>
+        <th>
+            Pagamento
+        </th>
+        <th>
+            Opções
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="text-align: center; color:black;">
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa.razao_social)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valorFinal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_venda)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_vencimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_pagamento)
+            </td>
+            <td>
+                <a class="btn btn-info" href="@Url.Action("EditarVenda","Vendas", new { idVenda = item.id })"><i class="bi bi-pencil-square"></i></a>
+                @*@Html.ActionLink("Editar", "EditarVenda", "Vendas", new { idVenda = item.id }, htmlAttributes: new { @class = "btn btn-info" })*@ |
+                <a class="btn btn-secondary" href="@Url.Action("DetalhesVenda","Vendas", new { id = item.id })"><i class="bi bi-three-dots"></i></a>
+                @*@Html.ActionLink("Detalhes", "DetalhesVenda", "Vendas", new { id = item.id }, htmlAttributes: new { @class = "btn btn-secondary" })*@ |
+                <a class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover a Venda ' + '@item.id' + '?')" href="@Url.Action("RemoverVenda","Vendas", new { id = item.id, confirm = true })"><i class="bi bi-trash-fill"></i></a>
+                @*@Html.ActionLink("Deletar", "RemoverVenda", "Vendas", new { id = item.id }, htmlAttributes: new { @class = "btn btn-danger"  })*@
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+<br />
+<br />
+
+<script>
+    $(function () {
+        $("#nomeCliente").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Clientes/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#nomeCliente").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.nomeCliente, value: item.nomeCliente }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>
+

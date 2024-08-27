@@ -1,0 +1,185 @@
+﻿@model IEnumerable<SARVA.Models.Item_Venda>
+
+@{
+    ViewBag.Title = "Catálogo de Produtos de Vendas";
+
+    int idUsuario = Convert.ToInt32(Session["idSS"]);
+
+    int idPedido = Convert.ToInt32(ViewBag.IdPedido);
+    int idEmpresa = Convert.ToInt32(ViewBag.IdEmpresa);
+
+    string nomeCliente = Convert.ToString(ViewBag.NomeCliente);
+
+    var listIV = (List<SARVA.Models.Item_Venda>)ViewBag.ListIV;
+
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<link href="~/css/catalogostyle.css" rel="stylesheet" />
+
+<body>
+    <div align="center"> <h2>Produtos Vendidos (revisar termo)</h2> </div>
+
+    <br />
+    <br />
+
+    <div class="filtro">
+
+        @using (Html.BeginForm("CatalogoItensVenda", "Item_Venda", new { idPedido = idPedido, idEmpresa = idEmpresa }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+        {
+            <div style="display: inline-flex">
+
+                <ul>
+                    <li>Cliente:</li>
+                    <br />
+                    <li><input type="text" name="nomeCliente" id="nomeCliente" /></li>
+                    <br />
+                    <li><input type="submit" id="btnFiltrarCliente" value="Filtrar Por Cliente" class="btn btn-light" /></li>
+                </ul>
+
+            </div>
+        }
+
+        <br />
+
+        @using (Html.BeginForm("CatalogoItensVenda", "Item_Venda", new { idPedido = idPedido, idEmpresa = idEmpresa }, FormMethod.Post, htmlAttributes: new { @class = "formFiltro" }))
+        {
+            <div style="display: inline-flex">
+
+                <ul>
+                    <li>Nº Venda</li>
+                    <br />
+                    <li><input type="text" name="numVenda" id="numVenda"</li>
+                    <br />
+                    <li><input type="submit" id="btnFiltrarNumVenda" value="Filtrar Por Nº Venda" class="btn btn-light" /></li>
+                </ul>
+
+            </div>
+        }
+
+    </div>
+
+    <br />
+
+    <div align="center">@Html.ActionLink("Limpar Filtros", "CatalogoItensVenda", "Item_Venda", new { idPedido = idPedido, idEmpresa = idEmpresa }, htmlAttributes: new { @class = "btn btn-light" })</div>
+
+    <br />
+    <br />
+
+    <div align="center">
+
+        @foreach (var item in Model)
+        {
+            bool jaEhPedido = false;
+            if (item.Item_Pedido.Where(x => x.Item_Venda.Venda.id_usuario == idUsuario && x.id_pedido != idPedido).ToList().Count > 0)
+            {
+                jaEhPedido = true;
+            }
+
+            if (item.Venda.id_empresa == idEmpresa)
+            {
+                if (DateTime.Now >= item.Produto.Ciclo.dataInicio && DateTime.Now <= item.Produto.Ciclo.dataFim)
+                {
+                    if (jaEhPedido == false)
+                    {
+                        <div class="card" style="width: 15rem; height: 23rem">
+
+                            <!-- <img src="~/img/Essencial Exclusivo Deo Parfum Masculino.jpg" style="height:320px;" /> -->
+                            <div class="card-body" style="margin: auto; font-weight: bold; font-size: 20px; text-align: center;">
+                                <!-- <h5 class="card-title">Essencial Exclusivo Deo Parfum </h5> -->
+
+                                <h5>
+                                    @Html.DisplayFor(modelItem => item.Produto.nome, new { htmlAttributes = new { @class = "card-title" } }) #@item.codigo_produto
+                                    <br />
+                                    Nº Venda: @item.id_venda
+                                </h5>
+
+                            </div>
+
+                            <br />
+
+                            <ul class="list-group list-group-flush">
+                                <!-- <li class="list-group-item">Valor: 118,00</li> -->
+
+                                <li class="list-group-item">
+                                    <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.quantidade, "Quantidade: ")</div>
+                                    <div id="idVenda" style="text-align: center">@Html.DisplayFor(modelItem => item.quantidade)</div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Venda.Cliente.nome, "Cliente: ")</div>
+                                    <div id="idVenda" style="text-align: center">@Html.DisplayFor(modelItem => item.Venda.Cliente.nome)</div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div style="text-align: center; font-weight: bold">@Html.LabelFor(modelItem => item.Venda.Empresa.razao_social, "Empresa: ")</div>
+                                    <div id="empresaProduto" style="text-align: center">@Html.DisplayFor(modelItem => item.Venda.Empresa.razao_social)</div>
+                                </li>
+
+                                @if (listIV.Contains(item))
+
+                                {
+                                    <p>Produto já adicionado!</p>
+                                }
+                                else
+
+                                {
+                                    @Html.ActionLink("Adicionar", "AdicionarItem_Pedido", "Item_Pedido", new { codigoIP = item.codigo_produto, idCiclo = item.id_ciclo_produto, idVenda = item.id_venda, id_Pedido = idPedido, nome_Cliente = nomeCliente }, null)
+                                }
+
+                            </ul>
+
+                        </div>
+                    }
+                }
+            }
+        }
+
+        <br />
+        <br />
+
+        <div style="margin: auto">
+            @Html.ActionLink("Continuar", "FinalizarPedido", "Pedidos", new { idPedido = idPedido }, htmlAttributes: new { @class = "btn btn-light" })
+
+            <div style="margin: auto; padding: 10px;">
+                @Html.ActionLink("Cancelar", "RemoverPedido", "Pedidos", new { id = idPedido, confirm = true }, htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <script>
+        $(function () {
+            $("#nomeCliente").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Clientes/GetSearchValue",
+                        dataType: "json",
+                        type: "POST",
+                        data: {
+                            search: $("#nomeCliente").val()
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (item) {
+                                return { label: item.nomeCliente, value: item.nomeCliente }
+                            }));
+                        },
+                        minLength: 2,
+                        error: function (xhr, status, error) {
+                            alert("Error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+

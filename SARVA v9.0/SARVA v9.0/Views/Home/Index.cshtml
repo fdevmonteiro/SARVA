@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<link href="~/css/indexstyle.css" rel="stylesheet" />
+
+<body>
+
+    <div class="content">
+
+        <h1>SARVA</h1>
+
+        <br />
+
+        <h3>Sistema de Apoio a Revendedores Autônomos</h3>
+
+    </div>
+
+    <br />
+    <br />
+
+    <div class="acesso">
+
+        <div class="botoes">
+
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <h2 id="gettingStartedTitle">Catálogo de Produtos</h2>
+                <p>
+                    Acesse o catálogo de produtos para adicionar uma nova venda ou requesitar a adição de um produto
+                </p>
+                @Html.ActionLink("Catalogo", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, htmlAttributes: new { @class = "btn btn-outline-light" })
+
+            </section>
+
+            <section class="col-md-4" aria-labelledby="hostingTitle">
+                <h2 id="hostingTitle">Minhas Vendas</h2>
+                <p>Acesse a área "Minhas Vendas" para visualizar e gerenciar suas vendas </p>
+                @Html.ActionLink("Vendas", "LerDadosVenda", "Vendas", new { idVenda = -1 }, htmlAttributes: new { @class = "btn btn-outline-light" })
+
+            </section>
+
+            <section class="col-md-4" aria-labelledby="hostingTitle">
+                <h2 id="hostingTitle">Meus Pedidos</h2>
+                <p>Acesse a área "Meus Pedidos" para visualizar e gerenciar seus pedidos </p>
+                @Html.ActionLink("Pedidos", "LerDadosPedido", "Pedidos", new { idVenda = -1 }, htmlAttributes: new { @class = "btn btn-outline-light" })
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="circle">
+
+        <div class="img">
+            <img src="~/img/9967640_online_service_help_advise_agent_icon.png" />
+        </div>
+
+    </div>
+</body>

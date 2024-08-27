@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SARVAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Ciclo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_empresa" Type="Int32" />
+    <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dataInicio" Type="DateTime" Precision="0" />
+    <Property Name="dataFim" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK_Ciclo_Empresa" FromRole="Ciclo" ToRole="Empresa" />
+    <NavigationProperty Name="Produto" Relationship="Self.FK_Produto_Ciclo1" FromRole="Ciclo" ToRole="Produto" />
+  </EntityType>
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" />
+    <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="aniversario" Type="DateTime" Precision="0" />
+    <Property Name="scoreId" Type="Int32" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Cliente__id_usua__300424B4" FromRole="Cliente" ToRole="Usuario" />
+    <NavigationProperty Name="Venda" Relationship="Self.FK__Venda__id_client__33D4B598" FromRole="Cliente" ToRole="Venda" />
+    <NavigationProperty Name="Score" Relationship="Self.FK_Cliente_Score" FromRole="Cliente" ToRole="Score" />
+  </EntityType>
+  <EntityType Name="Empresa">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="razao_social" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="flag" Type="Boolean" />
+    <NavigationProperty Name="Ciclo" Relationship="Self.FK_Ciclo_Empresa" FromRole="Empresa" ToRole="Ciclo" />
+    <NavigationProperty Name="Produto" Relationship="Self.FK__Produto__id_empr__2D27B809" FromRole="Empresa" ToRole="Produto" />
+    <NavigationProperty Name="Venda" Relationship="Self.FK__Venda__id_empres__34C8D9D1" FromRole="Empresa" ToRole="Venda" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK_Empresa_Usuario" FromRole="Empresa" ToRole="Usuario" />
+    <NavigationProperty Name="Pedido" Relationship="Self.FK_Pedido_Empresa" FromRole="Empresa" ToRole="Pedido" />
+  </EntityType>
+  <EntityType Name="Item_Pedido">
+    <Key>
+      <PropertyRef Name="codigo_IV" />
+      <PropertyRef Name="id_ciclo_IV" />
+      <PropertyRef Name="id_venda_IV" />
+      <PropertyRef Name="id_pedido" />
+    </Key>
+    <Property Name="codigo_IV" Type="Int32" Nullable="false" />
+    <Property Name="id_ciclo_IV" Type="Int32" Nullable="false" />
+    <Property Name="id_venda_IV" Type="Int32" Nullable="false" />
+    <Property Name="id_pedido" Type="Int32" Nullable="false" />
+    <Property Name="valor" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Item_Venda" Relationship="Self.FK_Item_Pedido_Item_Venda" FromRole="Item_Pedido" ToRole="Item_Venda" />
+    <NavigationProperty Name="Pedido" Relationship="Self.FK_Item_Pedido_Pedido2" FromRole="Item_Pedido" ToRole="Pedido" />
+  </EntityType>
+  <EntityType Name="Item_Venda">
+    <Key>
+      <PropertyRef Name="codigo_produto" />
+      <PropertyRef Name="id_ciclo_produto" />
+      <PropertyRef Name="id_venda" />
+    </Key>
+    <Property Name="codigo_produto" Type="Int32" Nullable="false" />
+    <Property Name="id_ciclo_produto" Type="Int32" Nullable="false" />
+    <Property Name="id_venda" Type="Int32" Nullable="false" />
+    <Property Name="valor" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="quantidade" Type="Int32" />
+    <Property Name="data_validade" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Item_Pedido" Relationship="Self.FK_Item_Pedido_Item_Venda" FromRole="Item_Venda" ToRole="Item_Pedido" />
+    <NavigationProperty Name="Venda" Relationship="Self.FK__Item_Vend__id_ve__38996AB5" FromRole="Item_Venda" ToRole="Venda" />
+    <NavigationProperty Name="Produto" Relationship="Self.FK_Item_Venda_Produto1" FromRole="Item_Venda" ToRole="Produto" />
+  </EntityType>
+  <EntityType Name="Pedido">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" />
+    <Property Name="id_empresa" Type="Int32" />
+    <Property Name="valor" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="data_pedido" Type="DateTime" Precision="0" />
+    <Property Name="data_vencimento" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK_Pedido_Empresa" FromRole="Pedido" ToRole="Empresa" />
+    <NavigationProperty Name="Item_Pedido" Relationship="Self.FK_Item_Pedido_Pedido2" FromRole="Pedido" ToRole="Item_Pedido" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK_Pedido_Usuario" FromRole="Pedido" ToRole="Usuario" />
+  </EntityType>
+  <EntityType Name="Produto">
+    <Key>
+      <PropertyRef Name="id_ciclo" />
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="id_ciclo" Type="Int32" Nullable="false" />
+    <Property Name="codigo" Type="Int32" Nullable="false" />
+    <Property Name="id_usuario" Type="Int32" />
+    <Property Name="id_empresa" Type="Int32" />
+    <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="valor" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="pontos" Type="Int32" />
+    <Property Name="flag" Type="Boolean" />
+    <NavigationProperty Name="Ciclo" Relationship="Self.FK_Produto_Ciclo1" FromRole="Produto" ToRole="Ciclo" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK__Produto__id_empr__2D27B809" FromRole="Produto" ToRole="Empresa" />
+    <NavigationProperty Name="Item_Venda" Relationship="Self.FK_Item_Venda_Produto1" FromRole="Produto" ToRole="Item_Venda" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Produto__id_usua__2C3393D0" FromRole="Produto" ToRole="Usuario" />
+  </EntityType>
+  <EntityType Name="Score">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="descricao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK_Cliente_Score" FromRole="Score" ToRole="Cliente" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="senha" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="roleId" Type="Int32" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK__Cliente__id_usua__300424B4" FromRole="Usuario" ToRole="Cliente" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK_Empresa_Usuario" FromRole="Usuario" ToRole="Empresa" />
+    <NavigationProperty Name="Pedido" Relationship="Self.FK_Pedido_Usuario" FromRole="Usuario" ToRole="Pedido" />
+    <NavigationProperty Name="Produto" Relationship="Self.FK__Produto__id_usua__2C3393D0" FromRole="Usuario" ToRole="Produto" />
+    <NavigationProperty Name="UsuarioRole" Relationship="Self.FK__Usuario__roleId__267ABA7A" FromRole="Usuario" ToRole="UsuarioRole" />
+    <NavigationProperty Name="Venda" Relationship="Self.FK__Venda__id_usuari__32E0915F" FromRole="Usuario" ToRole="Venda" />
+  </EntityType>
+  <EntityType Name="UsuarioRole">
+    <Key>
+      <PropertyRef Name="roleId" />
+    </Key>
+    <Property Name="roleId" Type="Int32" Nullable="false" />
+    <Property Name="roleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario__roleId__267ABA7A" FromRole="UsuarioRole" ToRole="Usuario" />
+  </EntityType>
+  <EntityType Name="Venda">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" />
+    <Property Name="id_cliente" Type="Int32" />
+    <Property Name="id_empresa" Type="Int32" />
+    <Property Name="valor" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="data_venda" Type="DateTime" Precision="0" />
+    <Property Name="data_vencimento" Type="DateTime" Precision="0" />
+    <Property Name="data_pagamento" Type="DateTime" Precision="0" />
+    <Property Name="desconto" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="valorFinal" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK__Venda__id_client__33D4B598" FromRole="Venda" ToRole="Cliente" />
+    <NavigationProperty Name="Empresa" Relationship="Self.FK__Venda__id_empres__34C8D9D1" FromRole="Venda" ToRole="Empresa" />
+    <NavigationProperty Name="Item_Venda" Relationship="Self.FK__Item_Vend__id_ve__38996AB5" FromRole="Venda" ToRole="Item_Venda" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK__Venda__id_usuari__32E0915F" FromRole="Venda" ToRole="Usuario" />
+  </EntityType>
+  <Association Name="FK_Ciclo_Empresa">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="0..1" />
+    <End Role="Ciclo" Type="Self.Ciclo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ciclo">
+        <PropertyRef Name="id_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Produto_Ciclo1">
+    <End Role="Ciclo" Type="Self.Ciclo" Multiplicity="1" />
+    <End Role="Produto" Type="Self.Produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ciclo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Produto">
+        <PropertyRef Name="id_ciclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cliente__id_usua__300424B4">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Cliente">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venda__id_client__33D4B598">
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+    <End Role="Venda" Type="Self.Venda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cliente">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venda">
+        <PropertyRef Name="id_cliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Cliente_Score">
+    <End Role="Score" Type="Self.Score" Multiplicity="0..1" />
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Score">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Cliente">
+        <PropertyRef Name="scoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Produto__id_empr__2D27B809">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="0..1" />
+    <End Role="Produto" Type="Self.Produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Produto">
+        <PropertyRef Name="id_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venda__id_empres__34C8D9D1">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="0..1" />
+    <End Role="Venda" Type="Self.Venda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venda">
+        <PropertyRef Name="id_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Empresa_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Empresa">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedido_Empresa">
+    <End Role="Empresa" Type="Self.Empresa" Multiplicity="0..1" />
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empresa">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="id_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Pedido_Item_Venda">
+    <End Role="Item_Venda" Type="Self.Item_Venda" Multiplicity="1" />
+    <End Role="Item_Pedido" Type="Self.Item_Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item_Venda">
+        <PropertyRef Name="codigo_produto" />
+        <PropertyRef Name="id_ciclo_produto" />
+        <PropertyRef Name="id_venda" />
+      </Principal>
+      <Dependent Role="Item_Pedido">
+        <PropertyRef Name="codigo_IV" />
+        <PropertyRef Name="id_ciclo_IV" />
+        <PropertyRef Name="id_venda_IV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Pedido_Pedido2">
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
+    <End Role="Item_Pedido" Type="Self.Item_Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pedido">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Item_Pedido">
+        <PropertyRef Name="id_pedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Item_Vend__id_ve__38996AB5">
+    <End Role="Venda" Type="Self.Venda" Multiplicity="1" />
+    <End Role="Item_Venda" Type="Self.Item_Venda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venda">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Item_Venda">
+        <PropertyRef Name="id_venda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Venda_Produto1">
+    <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+    <End Role="Item_Venda" Type="Self.Item_Venda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Produto">
+        <PropertyRef Name="id_ciclo" />
+        <PropertyRef Name="codigo" />
+      </Principal>
+      <Dependent Role="Item_Venda">
+        <PropertyRef Name="id_ciclo_produto" />
+        <PropertyRef Name="codigo_produto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedido_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Produto__id_usua__2C3393D0">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Produto" Type="Self.Produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Produto">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Usuario__roleId__267ABA7A">
+    <End Role="UsuarioRole" Type="Self.UsuarioRole" Multiplicity="0..1" />
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsuarioRole">
+        <PropertyRef Name="roleId" />
+      </Principal>
+      <Dependent Role="Usuario">
+        <PropertyRef Name="roleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venda__id_usuari__32E0915F">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Venda" Type="Self.Venda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venda">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="connSARVA" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Ciclo" EntityType="Self.Ciclo" />
+    <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+    <EntitySet Name="Empresa" EntityType="Self.Empresa" />
+    <EntitySet Name="Item_Pedido" EntityType="Self.Item_Pedido" />
+    <EntitySet Name="Item_Venda" EntityType="Self.Item_Venda" />
+    <EntitySet Name="Pedido" EntityType="Self.Pedido" />
+    <EntitySet Name="Produto" EntityType="Self.Produto" />
+    <EntitySet Name="Score" EntityType="Self.Score" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+    <EntitySet Name="UsuarioRole" EntityType="Self.UsuarioRole" />
+    <EntitySet Name="Venda" EntityType="Self.Venda" />
+    <AssociationSet Name="FK_Ciclo_Empresa" Association="Self.FK_Ciclo_Empresa">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Ciclo" EntitySet="Ciclo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Produto_Ciclo1" Association="Self.FK_Produto_Ciclo1">
+      <End Role="Ciclo" EntitySet="Ciclo" />
+      <End Role="Produto" EntitySet="Produto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cliente__id_usua__300424B4" Association="Self.FK__Cliente__id_usua__300424B4">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Cliente" EntitySet="Cliente" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venda__id_client__33D4B598" Association="Self.FK__Venda__id_client__33D4B598">
+      <End Role="Cliente" EntitySet="Cliente" />
+      <End Role="Venda" EntitySet="Venda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Cliente_Score" Association="Self.FK_Cliente_Score">
+      <End Role="Score" EntitySet="Score" />
+      <End Role="Cliente" EntitySet="Cliente" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Produto__id_empr__2D27B809" Association="Self.FK__Produto__id_empr__2D27B809">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Produto" EntitySet="Produto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venda__id_empres__34C8D9D1" Association="Self.FK__Venda__id_empres__34C8D9D1">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Venda" EntitySet="Venda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Empresa_Usuario" Association="Self.FK_Empresa_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Empresa" EntitySet="Empresa" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedido_Empresa" Association="Self.FK_Pedido_Empresa">
+      <End Role="Empresa" EntitySet="Empresa" />
+      <End Role="Pedido" EntitySet="Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Pedido_Item_Venda" Association="Self.FK_Item_Pedido_Item_Venda">
+      <End Role="Item_Venda" EntitySet="Item_Venda" />
+      <End Role="Item_Pedido" EntitySet="Item_Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Pedido_Pedido2" Association="Self.FK_Item_Pedido_Pedido2">
+      <End Role="Pedido" EntitySet="Pedido" />
+      <End Role="Item_Pedido" EntitySet="Item_Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Item_Vend__id_ve__38996AB5" Association="Self.FK__Item_Vend__id_ve__38996AB5">
+      <End Role="Venda" EntitySet="Venda" />
+      <End Role="Item_Venda" EntitySet="Item_Venda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Venda_Produto1" Association="Self.FK_Item_Venda_Produto1">
+      <End Role="Produto" EntitySet="Produto" />
+      <End Role="Item_Venda" EntitySet="Item_Venda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedido_Usuario" Association="Self.FK_Pedido_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Pedido" EntitySet="Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Produto__id_usua__2C3393D0" Association="Self.FK__Produto__id_usua__2C3393D0">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Produto" EntitySet="Produto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Usuario__roleId__267ABA7A" Association="Self.FK__Usuario__roleId__267ABA7A">
+      <End Role="UsuarioRole" EntitySet="UsuarioRole" />
+      <End Role="Usuario" EntitySet="Usuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venda__id_usuari__32E0915F" Association="Self.FK__Venda__id_usuari__32E0915F">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Venda" EntitySet="Venda" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

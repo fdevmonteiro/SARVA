@@ -1,0 +1,134 @@
+﻿@model IEnumerable<SARVA.Models.Pedido>
+
+@{
+    ViewBag.Title = "Meus Pedidos";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<link href="~/css/LerDadosVendasstyle.css" rel="stylesheet" />
+
+<h2 align="center">Meus Pedidos</h2>
+
+<br />
+
+<div align="center">
+    @using (Html.BeginForm("LerDadosPedido", "Pedidos", new { id = 1 }, FormMethod.Post))
+    {
+        <label for="dataInicio">Início:</label>
+        <input type="date" name="dataInicio" id="dataInicio" />
+
+        <label for="dataFim">Fim:</label>
+        <input type="date" name="dataFim" id="dataFim" />
+
+        <input type="submit" id="btnFiltrarData" value="Filtrar Por Data" />
+
+    }
+
+    <br />
+
+    @using (Html.BeginForm("LerDadosPedido", "Pedidos", new { id = 2 }, FormMethod.Post))
+    {
+        <label for="filtroEmpresa">Filtrar por Empresa:</label>
+        <input type="text" id="razaoSocial" name="filtroEmpresa" placeholder="Ex.: Natura" />
+
+        <input type="submit" id="btnFiltrarEmpresa" value="Filtrar Por Empresa" />
+    }
+
+    <br />
+
+    @Html.ActionLink("Limpar Filtros", "LerDadosPedido", "Pedidos", htmlAttributes: new { @class = "btn btn-light" })
+
+</div>
+
+<br />
+<br />
+
+<div align="center">
+    @Html.ActionLink("Novo Pedido", "BuscarEmpresa", "Empresas", new { requisitando = 4 }, htmlAttributes: new { @class = "btn btn-light" })
+</div>
+
+<br />
+
+<table class="table table-bordered " style="border-color: #FFD6CC;color:black;background:white;">
+    <tr>
+        <th>
+            Nº Pedido
+        </th>
+        <th>
+            Valor
+        </th>
+        <th>
+            Empresa
+        </th>
+        <th>
+            Data do Pedido
+        </th>
+        <th>
+            Data de Vencimento
+        </th>
+        <th>
+            Opções
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="text-align: center; color:black;">
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa.razao_social)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_pedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_vencimento)
+            </td>
+            <td>
+                <a class="btn btn-info" href="@Url.Action("DetalhesPedido","Pedidos", new { id = item.id })"><i class="bi bi-three-dots"></i></a>  |
+                <a class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir o Pedido Nº ' + '@item.id' + '?')" href="@Url.Action("RemoverPedido","Pedidos", new { id = item.id, confirm = true })"><i class="bi bi-trash-fill"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+<br />
+<br />
+
+<script>
+    $(function () {
+        $("#razaoSocial").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Empresas/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#razaoSocial").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.razaoSocial, value: item.razaoSocial }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>

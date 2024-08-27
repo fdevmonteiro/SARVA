@@ -1,0 +1,161 @@
+﻿@model SARVA.Models.Empresa
+@{
+    ViewBag.Title = "Buscar Empresa";
+
+    int requisitando = Convert.ToInt32(ViewBag.Requisitando);
+
+    string nome_cliente = Convert.ToString(ViewBag.NomeCliente);
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="~/css/BuscarEmpresa.css" rel="stylesheet" />
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<div class="titulo">
+     <br />
+     <br />
+     <br />
+       <h1 style="text-align:center;color:white;font-size:48px;">Buscar Empresa</h1>
+
+</div>
+
+@if (User.IsInRole("Admin"))
+{
+    <div align="center">
+        @Html.ActionLink("Nova Empresa", "AdicionarEmpresa", "Empresas", null, htmlAttributes: new { @style = "font-size: 18px" })
+    </div>
+}
+
+
+<br />
+<br />
+
+@if (requisitando == 1 || requisitando == 3)
+
+{
+    <div align="center">
+        @using (Html.BeginForm("AdicionarProdutoRequisitado", "Produtos", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div align="center" class="form-group">
+                <!--<label for="nome">Buscar Empresa</label>-->
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.razao_social, new { htmlAttributes = new { @class = "form-control", @id = "razaoSocial" } })
+                    @Html.ValidationMessageFor(model => model.razao_social, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div align="center" class="form-group">
+                <div style="display: inline-flex">
+                    <div style="padding-right: 50px;">
+                        <input type="submit" value="Continuar" class="btn btn-light" />
+                    </div>
+                    @if (requisitando == 1)
+                    {
+                        <div>
+                            @Html.ActionLink("Voltar", "LerDadosVenda", "Vendas", null, htmlAttributes: new { @class = "btn btn-warning" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            @Html.ActionLink("Voltar", "CatalogoProdutos", "Produtos", new {idVenda = -1, idEmpresa = -1}, htmlAttributes: new { @class = "btn btn-warning" })
+                        </div>
+                    }
+                </div>
+
+            </div>
+        }
+    </div>
+}
+else if (requisitando == 2)
+
+{
+    <div align="center">
+        @using (Html.BeginForm("AdicionarVenda", "Vendas", new { nomeCliente = nome_cliente }, FormMethod.Post, null))
+        {
+            @Html.AntiForgeryToken()
+
+            <div align="center" class="form-group">
+                <!--<label for="nome">Buscar Empresa</label>-->
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.razao_social, new { htmlAttributes = new { @class = "form-control", @id = "razaoSocial" } })
+                    @Html.ValidationMessageFor(model => model.razao_social, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div align="center" class="form-group">
+                <div style="display: inline-flex">
+                    <div style="padding-right: 50px;">
+                        <input type="submit" value="Continuar" class="btn btn-info" />
+                    </div>
+                    <div>
+                        @Html.ActionLink("Voltar", "LerDadosVenda", "Vendas", null, htmlAttributes: new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+else if (requisitando == 4) // PEDIDOS
+
+{
+    <div align="center">
+        @using (Html.BeginForm("AdicionarPedido", "Pedidos", FormMethod.Post, null))
+        {
+            @Html.AntiForgeryToken()
+
+            <div align="center" class="form-group">
+                <!--<label for="nome">Buscar Empresa</label>-->
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.razao_social, new { htmlAttributes = new { @class = "form-control", @id = "razaoSocial" } })
+                    @Html.ValidationMessageFor(model => model.razao_social, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div align="center" class="form-group">
+                <div style="display: inline-flex">
+                    <div style="padding-right: 50px;">
+                        <input type="submit" value="Continuar" class="btn btn-info" />
+                    </div>
+                    <div>
+                        @Html.ActionLink("Voltar", "LerDadosPedido", "Pedidos", null, htmlAttributes: new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+
+
+<script>
+    $(function () {
+        $("#razaoSocial").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Empresas/GetSearchValue",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        search: $("#razaoSocial").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        response($.map(data, function (item) {
+                            return { label: item.razaoSocial, value: item.razaoSocial }
+                        }));
+                    },
+                    minLength: 2,
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+    });
+</script>
+

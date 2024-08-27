@@ -1,0 +1,137 @@
+﻿@model SARVA.Models.Produto
+
+@{
+    ViewBag.Title = "Adicionar Produto";
+
+    int idEmpresa = Convert.ToInt32(ViewBag.IdEmpresa);
+
+    var db = new SARVA.Models.connSARVA();
+
+    var cicloVigente = db.Ciclo.Where(x => x.id_empresa == idEmpresa && DateTime.Now >= x.dataInicio && DateTime.Now <= x.dataFim).FirstOrDefault();
+}
+<link href="~/css/Requisitar Produto.css" rel="stylesheet" />
+@if (User.IsInRole("Admin"))
+
+{
+    <div align="center">
+        <h2 style="color: white">Criar Produto</h2>
+    </div>
+}
+else
+
+{
+    <div align="center">
+        <h2 style="color:white">Formulário de Requisitação de Produto</h2>
+    </div>
+}
+
+<div align="center">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nome, "Nome do Produto", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.codigo, "Código do Produto", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.codigo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.codigo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.id_empresa, htmlAttributes: new { Value = idEmpresa })
+
+
+        @Html.HiddenFor(model => model.id_usuario, htmlAttributes: new { Value = Session["idSS"] })
+
+        <br />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.valor, "Valor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.valor, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.valor, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ciclo.nome, "Ciclo", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" id="cicloNome" name="cicloNome" class="form-control" />
+                    @Html.ValidationMessageFor(model => model.Ciclo.nome, "", new { @class = "text-danger" })
+                    <br />
+                    <p style="color: red;">@ViewBag.CicloErrorMessage</p>
+                    <br />
+                </div>
+            </div>
+        }
+        else
+        {
+            <input hidden type="text" id="cicloNome" name="cicloNome" class="form-control" value="@cicloVigente.nome" />
+            @*@Html.HiddenFor(model => model.id_ciclo, htmlAttributes: new { Value = cicloVigente.id })*@
+        }
+
+
+        <br />
+
+        @Html.HiddenFor(model => model.pontos)
+
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.HiddenFor(model => model.flag, htmlAttributes: new { Value = true }) <!-- Visão do Admin -->
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.flag, htmlAttributes: new { Value = false }) <!-- Visão do Vendedor -->
+        }
+
+        <br />
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Adicionar Produto" class="btn btn-info" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Enviar" class="btn btn-info" />
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label>@ViewBag.ContaJaExiste</label>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<br />
+
+<div align="center">
+    @Html.ActionLink("Voltar", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, htmlAttributes: new { @class = "btn btn-warning" })
+</div>

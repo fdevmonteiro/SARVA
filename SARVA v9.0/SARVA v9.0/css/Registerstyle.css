@@ -1,0 +1,41 @@
+﻿body {
+    background-image: url('../img/bg-signup.png');
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.Arearegistro {
+    padding-top: 10em;
+    background: transparent;
+    border-radius: 10px;
+    width: 350px;
+    color: #fff;
+    box-shadow: rgba(0,0,0,2) 10px;
+    height: 500px;
+}
+
+.text {
+    font-size: 46px;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+}
+
+.form-group {
+    font-size: 20px;
+    text-shadow: 1px 1px 2px black;
+}
+
+@media screen and (max-width: 1024px) {
+
+    body {
+        height: 100%;
+        background-attachment: fixed;
+        background-repeat: repeat-y;
+        background-size: 200%;
+    }
+
+}

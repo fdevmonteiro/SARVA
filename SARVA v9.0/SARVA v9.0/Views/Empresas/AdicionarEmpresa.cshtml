@@ -1,0 +1,92 @@
+﻿@model SARVA.Models.Empresa
+
+@{
+    if (User.IsInRole("Admin"))
+
+    {
+        ViewBag.Title = "Adicionar Empresa";
+    }
+    else
+    {
+        ViewBag.Title = "Requisitar Empresa";
+    }
+
+}
+<link href="~/css/AdicionarEmpresastyle.css" rel="stylesheet" />
+@if (User.IsInRole("Admin"))
+
+{
+    <h2 align="center" style="color:white;">Adicionar Empresa</h2>
+}
+else
+
+{
+    <h2 align="center" style="color:white;">Formulário de Requisitação de Empresa</h2>
+}
+
+<div align="center">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id_usuario, htmlAttributes: new { Value = Session["idSS"] })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.razao_social, "Razão Social", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.razao_social, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.razao_social, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.HiddenFor(model => model.flag, htmlAttributes: new { Value = true }) <!-- Visão do Admin -->
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.flag, htmlAttributes: new { Value = false }) <!-- Visão do Vendedor -->
+            }
+
+            <br />
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Adicionar Empresa" class="btn btn-info" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Enviar" class="btn btn-info" />
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<br />
+
+@if (User.IsInRole("Admin"))
+
+{
+    <div align="center">
+        @Html.ActionLink("Voltar", "LerDadosEmpresa", "Empresas")
+    </div>
+}
+else
+
+{
+    <div align="center">
+        @Html.ActionLink("Voltar", "Index", "Home")
+    </div>
+}
+
+

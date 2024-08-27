@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SARVA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color:#EDFFFF;">
+        <div class="container">
+            @Html.ActionLink("SARVA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar a navegação" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (User.Identity.IsAuthenticated)
+
+                    {
+                        // ÁREA VENDEDOR:
+                        if (User.IsInRole("Vendedor"))
+
+                        {
+                            <li>@Html.ActionLink("Relatório Mensal", "Relatorio", "Home", new { id = Session["idSS"] }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Meus Clientes", "LerDadosCliente", "Clientes", new { id = Session["idSS"] }, new { @class = "nav-link" })</li>
+
+                            <li>@Html.ActionLink("Minhas Vendas", "LerDadosVenda", "Vendas", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Meus Pedidos", "LerDadosPedido", "Pedidos", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Catálogo de Produtos", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Requisitar Empresa", "AdicionarEmpresa", "Empresas", null, new { @class = "nav-link" })</li>
+                        }
+
+                        // ÁREA ADMIN:
+                        else
+
+                        {
+                            <li>@Html.ActionLink("Gerir Ciclos", "LerDadosCiclo", "Ciclos", new { idVenda = -1, idEmpresa = -1 }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Gerir Produtos", "CatalogoProdutos", "Produtos", new { idVenda = -1, idEmpresa = -1 }, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Gerir Empresas", "LerDadosEmpresa", "Empresas", new { idVenda = -1 }, new { @class = "nav-link" })</li>
+                        }
+                    }
+                </ul>
+                <ul class="navbar-nav flex-grow-1" style="float: right !important">
+                    @if (User.Identity.IsAuthenticated)
+
+                    {
+                        <li class="nav-link">Olá @Session["userNameSS"]!</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+                    else
+
+                    {
+                        <li>@Html.ActionLink("Registrar", "Register", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Login", "Login", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

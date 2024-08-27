@@ -1,0 +1,57 @@
+﻿@model SARVA.Models.Empresa
+
+@{
+    ViewBag.Title = "Editar Empresa";
+}
+<link href="~/css/EditarEmpresastyle.css" rel="stylesheet" />
+
+<h2 align="center">Editar Empresa</h2>
+
+<br />
+
+<div align="center">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id)
+            @Html.HiddenFor(model => model.id_usuario)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.razao_social, "Razão Social", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.razao_social, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.razao_social, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.flag, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.flag)
+                        @Html.ValidationMessageFor(model => model.flag, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar Alterações" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
+<div align="center">
+    @Html.ActionLink("Voltar", "LerDadosEmpresa", "Empresas")
+</div>
